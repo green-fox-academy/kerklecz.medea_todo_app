@@ -38,8 +38,8 @@ public class Todos {
     public void addTodosToFile() {
         Path path = Paths.get("todos.txt");
         List<String> todosName = new ArrayList<>();
-        for (Todo td:todos
-             ) {
+        for (Todo td : todos
+        ) {
             todosName.add(td.getName());
         }
         try {
@@ -58,9 +58,12 @@ public class Todos {
         } catch (IOException e) {
             throw new IllegalStateException("Nem sikerült a fájlbeolvasás");
         }
-
-        for (int i = 0; i < todos.size(); i++) {
-            System.out.println(i+1 + " - " + todos.get(i));
+        if(todos.isEmpty()){
+            System.out.println("Nincs mára tennivalód :-)");
+        } else {
+            for (int i = 0; i < todos.size(); i++) {
+                System.out.println(i + 1 + " - " + todos.get(i));
+            }
         }
     }
 }
