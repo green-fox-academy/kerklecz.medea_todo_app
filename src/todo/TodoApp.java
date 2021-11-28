@@ -16,7 +16,12 @@ public class TodoApp {
             todos.startWithoutArgument();
         } else if (args[0].equals("-l")){
             todos.printToConsole();
+        } else if (args[0].equals("-a")){
+            todos.setTodos(args[1]);
+            todos.addTodosToFile();
         }
+
+        todos.printToConsole();
 
     }
 }
