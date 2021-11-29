@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Todos {
 
-    private static List<Todo> todos = new ArrayList<>();
+    private List<Todo> todos = new ArrayList<>();
 
     public Todos() {
         readAndAddTodos();
