@@ -81,6 +81,15 @@ public class Todos {
 
     }
 
+    public void isDone(int todoIndex){
+        readAndAddTodos();
+        for (int i = 0; i < todos.size(); i++) {
+            if(i==todoIndex-1){
+                todos.get(i).setDone(true);
+            }
+        }
+    }
+
     private List<String> readFromFile() {
         Path path = Paths.get("todos.txt");
         List<String> todos;
