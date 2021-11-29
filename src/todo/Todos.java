@@ -71,11 +71,7 @@ public class Todos {
     }
 
     public void removeTodo(int todoIndex) {
-        List<String> todosName = readFromFile();
-        for (String todoName : todosName
-        ) {
-            todos.add(new Todo(todoName));
-        }
+        readAndAddTodos();
         if (todoIndex > todos.size()) {
             throw new InvalidTodosOperationException("Nem lehetséges az eltávolítás: túlindexelési probléma adódott!");
         } else {
@@ -95,5 +91,13 @@ public class Todos {
             throw new InvalidTodosOperationException("Nem sikerült a fájlbeolvasás");
         }
         return todos;
+    }
+
+    private void readAndAddTodos(){
+        List<String> todosName = readFromFile();
+        for (String tdName : todosName
+        ) {
+            todos.add(new Todo(tdName));
+        }
     }
 }

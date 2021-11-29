@@ -4,6 +4,7 @@ public class TodoApp {
 
 
     public static void executeOperation(String[] args, Todos todos){
+        argumentException(args, todos);
         if (args.length == 0) {
             todos.startWithoutArgument();
         } else if (args[0].equals("-l")) {
@@ -26,6 +27,14 @@ public class TodoApp {
                 throw new InvalidTodosOperationException("Nem lehetséges az eltávolítás: a megadott index nem szám!");
             }
         }
+    }
+
+    public static void argumentException(String[] args, Todos todos){
+        if(!args[0].equals("-l")&& !args[0].equals("-a")&& !args[0].equals("-r")&&!args[0].equals("-c")){
+            System.out.println("Nem támogatott argumentum\n");
+            todos.startWithoutArgument();
+        }
+
     }
 
     public static void main(String[] args) {
