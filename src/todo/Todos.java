@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Todos {
 
-    private List<Todo> todos = new ArrayList<>();
+    private static List<Todo> todos = new ArrayList<>();
 
     public Todos() {
         readAndAddTodos();
@@ -22,7 +20,7 @@ public class Todos {
     }
 
     public void setTodos(String todoName) {
-                todos.add(new Todo(todoName));
+        todos.add(new Todo(todoName));
     }
 
     public void startWithoutArgument() {
@@ -39,14 +37,13 @@ public class Todos {
 
     public void addTodosToFile() {
         Path path = Paths.get("todos.txt");
-        List<String> todosName = new ArrayList<>();
-        for (Todo todo:todos
-             ) {
-            todosName.add(todo.getName());
+        List<String> todosStrings = new ArrayList<>();
+        for (Todo todo : todos
+        ) {
+            todosStrings.add(todo.toString());
         }
-
         try {
-            Files.write(path, todosName);
+            Files.write(path, todosStrings);
         } catch (IOException e) {
             throw new InvalidTodosOperationException("Nem sikerült a fájlba írás");
         }
@@ -81,12 +78,16 @@ public class Todos {
         if (todoIndex > todos.size()) {
             throw new InvalidTodosOperationException("Nem lehetséges az eltávolítás: túlindexelési probléma adódott!");
         } else {
-            for (int i = 0; i < todos.size(); i++) {
-                if (i == (todoIndex - 1)) {
-                    todos.get(i).setDone(true);
-                }
-            }
+            todos.get(todoIndex-1).setDone(true);
+            addTodosToFile();
         }
+    }
+
+
+
+    public Todo parseTodoString(String todoString) {
+        String[] parseArray = todoString.split(";");
+        return new Todo(parseArray[0], Boolean.parseBoolean(parseArray[1]));
     }
 
     private List<String> readFromFile() {
@@ -104,7 +105,7 @@ public class Todos {
         List<String> todosName = readFromFile();
         for (String tdName : todosName
         ) {
-            todos.add(new Todo(tdName));
+            todos.add(parseTodoString(tdName));
         }
     }
 }

@@ -10,6 +10,12 @@ public class Todo {
         this.isDone = false;
     }
 
+    public Todo(String name, boolean isDone) {
+        this.name = name;
+        this.isDone = isDone;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -20,5 +26,10 @@ public class Todo {
 
     public void setDone(boolean done) {
         isDone = done;
+    }
+
+    @Override
+    public String toString() {
+        return name + ';' + isDone;
     }
 }

@@ -1,2 +1,2 @@
-kutya
-kutya
+Kutyát sétáltatni;true
+Macskát etetni;false
