@@ -6,14 +6,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Todos {
 
-    private List<Todo> todos;
+    private List<Todo> todos = new ArrayList<>();
 
     public Todos() {
-        this.todos = new ArrayList<>();
+        readAndAddTodos();
     }
 
     public List<Todo> getTodos() {
@@ -21,14 +22,7 @@ public class Todos {
     }
 
     public void setTodos(String todoName) {
-        List<String> todosName = readFromFile();
-        if (!todosName.isEmpty()) {
-            for (String tdName : todosName
-            ) {
-                todos.add(new Todo(tdName));
-            }
-        }
-        todos.add(new Todo(todoName));
+                todos.add(new Todo(todoName));
     }
 
     public void startWithoutArgument() {
@@ -46,32 +40,34 @@ public class Todos {
     public void addTodosToFile() {
         Path path = Paths.get("todos.txt");
         List<String> todosName = new ArrayList<>();
-        for (Todo td : todos
-        ) {
-            todosName.add(td.getName());
+        for (Todo todo:todos
+             ) {
+            todosName.add(todo.getName());
         }
+
         try {
             Files.write(path, todosName);
         } catch (IOException e) {
             throw new InvalidTodosOperationException("Nem sikerült a fájlba írás");
         }
+
     }
 
     public void printToConsole() {
-
-        List<String> todos = readFromFile();
-
         if (todos.isEmpty()) {
             System.out.println("Nincs mára tennivalód :-)");
         } else {
             for (int i = 0; i < todos.size(); i++) {
-                System.out.println(i + 1 + " - " + todos.get(i));
+                if (todos.get(i).isDone()) {
+                    System.out.println((i + 1) + " - " + "[x] " + todos.get(i).getName());
+                } else {
+                    System.out.println((i + 1) + " - " + "[ ] " + todos.get(i).getName());
+                }
             }
         }
     }
 
     public void removeTodo(int todoIndex) {
-        readAndAddTodos();
         if (todoIndex > todos.size()) {
             throw new InvalidTodosOperationException("Nem lehetséges az eltávolítás: túlindexelési probléma adódott!");
         } else {
@@ -81,28 +77,30 @@ public class Todos {
 
     }
 
-    public void isDone(int todoIndex){
-        readAndAddTodos();
-        for (int i = 0; i < todos.size(); i++) {
-            if(i==todoIndex-1){
-                todos.get(i).setDone(true);
+    public void todoDone(int todoIndex) {
+        if (todoIndex > todos.size()) {
+            throw new InvalidTodosOperationException("Nem lehetséges az eltávolítás: túlindexelési probléma adódott!");
+        } else {
+            for (int i = 0; i < todos.size(); i++) {
+                if (i == (todoIndex - 1)) {
+                    todos.get(i).setDone(true);
+                }
             }
         }
     }
 
     private List<String> readFromFile() {
         Path path = Paths.get("todos.txt");
-        List<String> todos;
-
+        List<String> todosName;
         try {
-            todos = Files.readAllLines(path);
+            todosName = Files.readAllLines(path);
         } catch (IOException e) {
             throw new InvalidTodosOperationException("Nem sikerült a fájlbeolvasás");
         }
-        return todos;
+        return todosName;
     }
 
-    private void readAndAddTodos(){
+    private void readAndAddTodos() {
         List<String> todosName = readFromFile();
         for (String tdName : todosName
         ) {
